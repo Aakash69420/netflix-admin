@@ -5,11 +5,11 @@ import { createMovie, getMovies } from "../../context/movieContext/apiCalls";
 import { MovieContext } from "../../context/movieContext/MovieContext";
 import { ListContext } from "../../context/listContext/ListContext";
 import { createList } from "../../context/listContext/apiCalls";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function NewList() {
   const [list, setList] = useState(null);
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const { dispatch } = useContext(ListContext);
   const { movies, dispatch: dispatchMovie } = useContext(MovieContext);
@@ -31,7 +31,7 @@ export default function NewList() {
   const handleSubmit = (e) => {
     e.preventDefault();
     createList(list, dispatch);
-    history.push("/lists")
+    navigate("/lists")
   };
 
   return (

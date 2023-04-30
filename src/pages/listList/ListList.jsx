@@ -30,7 +30,7 @@ export default function ListList() {
         return (
           <>
             <Link
-              to={{ pathname: "/list/" + params.row._id, list: params.row }}
+              to={{ pathname: "/list/" + params.row._id, list: params.row }} state ={{list: lists.filter((list) => list._id===params.row._id)}} 
             >
               <button className="productListEdit">Edit</button>
             </Link>

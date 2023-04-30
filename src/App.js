@@ -16,10 +16,10 @@ import { AuthContext } from "./context/authContext/AuthContext";
 import { useContext } from "react";
 import ListList from "./pages/listList/ListList";
 import List from "./pages/list/List";
-// import NewList from "./pages/newList/NewList";
+import NewList from "./pages/newList/NewList";
 import MovieList from "./pages/movieList/MovieList";
 import Movie from "./pages/movie/Movie";
-// import NewMovie from "./pages/newMovie/NewMovie";
+import NewMovie from "./pages/newMovie/NewMovie";
 
 function App() {
   // console.log(userStats);
@@ -43,8 +43,8 @@ function App() {
               <Route path="/movie/:movieId" element={<Movie />} />
               <Route path="/lists" element={<ListList />} />
               <Route path="/list/:listId" element={<List />} />
-              {/* <Route path="/newMovie" element={<NewMovie />} /> */}
-              {/* <Route path="/newlist" element={<NewList />} /> */}
+              <Route path="/newMovie" element={<NewMovie />} />
+              <Route path="/newlist" element={<NewList />} />
             </Routes>
           </div>
         </>
