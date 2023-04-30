@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import "./movie.css";
 import { MovieContext } from "../../context/movieContext/MovieContext";
@@ -8,9 +8,8 @@ import { updateMovie, getMovies } from "../../context/movieContext/apiCalls";
 export default function Movie() {
   const { movies, dispatch } = useContext(MovieContext);
   const location = useLocation();
-  const [movie, setMovie] = useState(location.state.movie[0]);
-
-  console.log(movie)
+  const [movie, setMovie] = useState(location.state?.movie || {});
+  const navigate = useNavigate();
 
   useEffect(() => {
     getMovies(dispatch);
@@ -18,12 +17,19 @@ export default function Movie() {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    updateMovie(movie._id, movie, dispatch);
+    updateMovie(movie[0]._id, movie, dispatch)
+    .then(() => {
+      // Navigate back to the lists page after update
+      navigate("/movies");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   };
 
   const handleChange = (e) => {
-    const value = e.target.value;
-    setMovie({ ...movie, [e.target.name]: value });
+    const { name, value } = e.target;
+    setMovie({ ...movie, [name]: value });
   };
 
   return (
@@ -37,25 +43,25 @@ export default function Movie() {
       <div className="productTop">
         <div className="productTopRight">
           <div className="productInfoTop">
-            <img src={movie.img} alt="" className="productInfoImg" />
-            <span className="productName">{movie.title}</span>
+            <img src={movie[0].img} alt="" className="productInfoImg" />
+            <span className="productName">{movie[0].title}</span>
           </div>
           <div className="productInfoBottom">
             <div className="productInfoItem">
               <span className="productInfoKey">id:</span>
-              <span className="productInfoValue">{movie._id}</span>
+              <span className="productInfoValue">{movie[0]._id}</span>
             </div>
             <div className="productInfoItem">
               <span className="productInfoKey">genre:</span>
-              <span className="productInfoValue">{movie.genre}</span>
+              <span className="productInfoValue">{movie[0].genre}</span>
             </div>
             <div className="productInfoItem">
               <span className="productInfoKey">year:</span>
-              <span className="productInfoValue">{movie.year}</span>
+              <span className="productInfoValue">{movie[0].year}</span>
             </div>
             <div className="productInfoItem">
               <span className="productInfoKey">limit:</span>
-              <span className="productInfoValue">{movie.limit}</span>
+              <span className="productInfoValue">{movie[0].limit}</span>
             </div>
           </div>
         </div>
@@ -96,18 +102,18 @@ export default function Movie() {
             <label>Video</label>
             <input type="file" />
           </div>
-          <div className="productFormRight">
-            <div className="productUpload">
-              <img src={movie.img} alt="" className="productUploadImg" />
-              <label htmlFor="file">
-                <Publish />
-              </label>
-              <input type="file" id="file" style={{ display: "none" }} />
-            </div>
-            <button className="productButton" onClick={() => handleUpdate(movie._id)}>Update</button>
-          </div>
-        </form>
+      <div className="productFormRight">
+        <div className="productUpload">
+          <img src={movie[0].img} alt="" className="productUploadImg" />
+          <label htmlFor="file">
+            <Publish />
+          </label>
+          <input type="file" id="file" name="img" onChange={handleChange} style={{ display: "none" }} />
+        </div>
+        <button className="productButton" onClick={handleUpdate}>Update</button>
       </div>
-    </div>
-  );
+    </form>
+  </div>
+</div>
+);
 }
