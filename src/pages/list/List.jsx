@@ -19,7 +19,7 @@
       updateList(list[0]._id, list, dispatch)
       .then(() => {
         // Navigate back to the lists page after update
-        navigate("/movies");
+        navigate("/lists");
       })
       .catch((error) => {
         console.log(error);
